@@ -9,7 +9,9 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/services/supaBaseClient";
 import { UserDetailContext } from "@/context/userContext";
 
-const QuestionList = ({ formData }: { formData: FormDataType }) => {
+const QuestionList = ({ formData, onCreateLink }: {
+    formData: FormDataType, onCreateLink: (interview_id: string) => void
+}) => {
 
     const [loading, setLoading] = useState(true);
     const [saveLoading, setSaveLoading] = useState(false);
@@ -38,19 +40,24 @@ const QuestionList = ({ formData }: { formData: FormDataType }) => {
     const onFinish = async () => {
         setSaveLoading(true)
         try {
-            const uid = uuidv4();
+            const interview_id = uuidv4();
 
             const { data, error } = await supabase
                 .from('Interviews')
                 .insert([
                     {
                         jobPosition: formData.jobPosition, jobDescription: formData.jobDescription, duration: formData.interviewDuration, type: formData.interviewType, questionList: lists,
-                        userEmail: user.email, interview_id: uid
+                        userEmail: user.email, interview_id: interview_id
                     },
                 ])
                 .select()
             console.log(data);
             setSaveLoading(false);
+
+            onCreateLink(
+                interview_id,
+            )
+
         } catch (e) {
             console.log(e)
             toast('Error while saving data😔');
@@ -65,7 +72,7 @@ const QuestionList = ({ formData }: { formData: FormDataType }) => {
     // }, [formData]);
 
     if (loading) {
-        return <div>
+        return <div className='flex flex-col justify-center items-center'>
             <Loader2Icon className="animate-spin" />
             <div className="p-5 bg-blue-100 rounded-xl border  border-primary flex flex-col gap-5 items-center ">
                 <h2 className="font-medium">Generating Interview Questions🫷🔃</h2>
@@ -94,7 +101,7 @@ const QuestionList = ({ formData }: { formData: FormDataType }) => {
                     {saveLoading &&
                         <Loader2Icon className='animate-spin' />
                     }
-                    Finish
+                    Create Interview Link & Finish
                 </Button>
             </div>
         </div>

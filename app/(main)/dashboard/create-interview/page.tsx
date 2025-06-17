@@ -7,6 +7,7 @@ import React, { useState } from 'react'
 import FormContainer from './_components/FormContainer'
 import QuestionList from './_components/QuestionList'
 import { toast } from 'sonner'
+import InterviewLink from './_components/InterviewLink'
 
 export type FormDataType = {
     // Define the actual fields you're collecting in your form
@@ -19,7 +20,8 @@ export type FormDataType = {
 const CreateInterview: React.FC = () => {
     const router = useRouter()
     const [step, setStep] = useState<number>(1)
-    const [formData, setFormdata] = useState<FormDataType>({})
+    const [formData, setFormdata] = useState<FormDataType>({});
+    const [interviewId, setInterviewId] = useState('')
 
     const onHandleInputChange = (field: keyof FormDataType, value: string | string[]) => {
         setFormdata((prev) => ({
@@ -35,6 +37,11 @@ const CreateInterview: React.FC = () => {
         setStep(prev => prev + 1)
     }
 
+    const onCreateLink = (interview_id: string) => {
+        setInterviewId(interview_id)
+        setStep((prev) => prev + 1)
+    }
+
     return (
         <div className='mt-10 px-10 md:px-24 lg:px-44 xl:px-56'>
             <div className='flex gap-2 justify-start items-center text-center'>
@@ -48,7 +55,7 @@ const CreateInterview: React.FC = () => {
                     setStep={goToNext}
                     formData={formData}
                     onHandleInputChange={onHandleInputChange}
-                /> : step === 2 ? <QuestionList   formData={formData} /> : null
+                /> : step === 2 ? <QuestionList formData={formData} onCreateLink={(interview_id: string) => onCreateLink(interview_id)} /> : step === 3 ? <InterviewLink interviewId={interviewId} formData={formData}/> : null
             }
         </div>
     )
