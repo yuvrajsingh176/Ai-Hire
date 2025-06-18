@@ -51,7 +51,6 @@ const QuestionList = ({ formData, onCreateLink }: {
                     },
                 ])
                 .select()
-            console.log(data);
             setSaveLoading(false);
 
             onCreateLink(
@@ -67,9 +66,9 @@ const QuestionList = ({ formData, onCreateLink }: {
 
     }
 
-    // useEffect(() => {
-    //     GenerateQuestionList()
-    // }, [formData]);
+    useEffect(() => {
+        GenerateQuestionList()
+    }, [formData]);
 
     if (loading) {
         return <div className='flex flex-col justify-center items-center'>

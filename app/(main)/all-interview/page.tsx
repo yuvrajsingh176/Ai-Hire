@@ -1,27 +1,15 @@
 'use client'
-import { Button } from "@/components/ui/button";
-import { UserDetailContext } from "@/context/userContext";
-import { supabase } from "@/services/supaBaseClient";
-import { Copy, Plus, Send, Video } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
-import { toast } from "sonner";
+import React, { useContext, useEffect, useState } from 'react'
+import { Interview } from '../dashboard/_components/LatestInterviewList';
+import { supabase } from '@/services/supaBaseClient';
+import { useRouter } from 'next/navigation';
+import { UserDetailContext } from '@/context/userContext';
+import { Button } from '@/components/ui/button';
+import { Copy, Send } from 'lucide-react';
+import { toast } from 'sonner';
 
-export type Interview = {
-    id: number;
-    created_at: string; // ISO date string
-    jobPosition: string;
-    jobDescription: string;
-    duration: string;
-    type: string[]; // originally a stringified array, should be parsed to actual array
-    questionList: string[];
-    userEmail: string;
-    interview_id: string;
-};
-
-
-const LatestInterviewList = ({ copy, setCopy }: { copy: string, setCopy: Dispatch<SetStateAction<string>> }) => {
-
+const AllInterview = () => {
+    const [copy, setCopy] = useState('')
     const { user } = useContext(UserDetailContext);
     const router = useRouter();
     const [interviewList, setInterviewList] = useState<Interview[]>([]);
@@ -33,7 +21,6 @@ const LatestInterviewList = ({ copy, setCopy }: { copy: string, setCopy: Dispatc
             .select('*')
             .eq('userEmail', email)
             .order('id', { ascending: false })
-            .limit(6)
 
         setInterviewList(Interviews as Interview[])
     }
@@ -55,15 +42,10 @@ const LatestInterviewList = ({ copy, setCopy }: { copy: string, setCopy: Dispatc
     }, [user?.email])
 
     return (
-        <div className="my-5 ">
-            <h2 className="font-bold text-2xl my-3">Previously created interviews</h2>
-            {interviewList?.length === 0 &&
-                <div className="p-5 mt-5 flex flex-col gap-3 items-center bg-white border ">
-                    <Video className="h-10 w-10 text-primary " />
-                    <h2>You don&apos;t have any interview scheduled yet</h2>
-                    <Button className="cursor-pointer" onClick={() => router.push('/dashboard/create-interview')}>Create New Interview <Plus /></Button>
-                </div>
-            }
+        <div>
+            <p className='font-bold text-primary text-4xl text-center w-full my-8'>
+                All Interviews
+            </p>
             <div className="flex flex-wrap gap-6">
                 {
                     interviewList?.map((val: Interview, index) => (
@@ -93,8 +75,8 @@ const LatestInterviewList = ({ copy, setCopy }: { copy: string, setCopy: Dispatc
                     ))
                 }
             </div>
-        </div >
+        </div>
     )
 }
 
-export default LatestInterviewList;
+export default AllInterview

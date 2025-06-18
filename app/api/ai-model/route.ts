@@ -2,7 +2,7 @@ import { QUESTION_PROMPT } from "@/services/Constants";
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_APIKEY });
+export const openai = new OpenAI({ apiKey: process.env.OPENAI_APIKEY });
 
 export async function POST(req: NextRequest) {
     const { jobTitle, jobDescription, type, duration } = await req.json();
