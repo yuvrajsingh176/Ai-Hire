@@ -52,6 +52,7 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
         CreateNewUser();
     }, []);
 
+ 
     return (
         <UserDetailContext.Provider value={{ user, setUser }}>
             {children}
