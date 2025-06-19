@@ -1,4 +1,7 @@
+
+import { Button } from '@/components/ui/button'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 const InterviewCompleted = () => {
@@ -12,12 +15,19 @@ const InterviewCompleted = () => {
                 {/* Replace src with your actual image path */}
                 <div className="w-full h-64 relative">
                     <Image
-                        src="/interview-complete.png" // <-- change this to your desired image
+                        src="/interview-completed.png" // <-- change this to your desired image
                         alt="Interview Completed"
                         layout="fill"
                         objectFit="contain"
                     />
                 </div>
+            </div>
+            <div className='mt-4 flex items-center justify-center'>
+                <Link href={'/dashboard'}>
+                    <Button >
+                        Dashboard
+                    </Button>
+                </Link>
             </div>
         </div>
     )

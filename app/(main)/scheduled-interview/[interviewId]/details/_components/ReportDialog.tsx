@@ -11,6 +11,7 @@ import { InterviewFeedbackEntry } from "../page"
 import { Progress } from "@/components/ui/progress"
 
 const ReportDialog = ({ candidate }: { candidate: InterviewFeedbackEntry }) => {
+    console.log(candidate?.recommended)
     return (
         <div>
             <Dialog>
@@ -87,7 +88,7 @@ const ReportDialog = ({ candidate }: { candidate: InterviewFeedbackEntry }) => {
 
                                     {/* Recommendation */}
                                     <div
-                                        className={`p-6 rounded-xl shadow-md text-white font-medium ${!candidate?.recommended ? 'bg-red-500' : 'bg-green-500'
+                                        className={`p-6 rounded-xl shadow-md text-white font-medium ${candidate?.feedback?.recommendation === 'FALSE' ? 'bg-red-500' : 'bg-green-500'
                                             }`}
                                     >
                                         <h2 className="text-lg mb-1">Recommendation</h2>

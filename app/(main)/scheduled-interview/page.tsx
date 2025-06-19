@@ -2,7 +2,8 @@
 import { Button } from '@/components/ui/button';
 import { UserDetailContext } from '@/context/userContext'
 import { supabase } from '@/services/supaBaseClient'
-import { ArrowRight,  Plus, Video } from 'lucide-react';
+import { ArrowRight, Plus, Video } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react'
 
@@ -65,9 +66,11 @@ const ScheduledInterview = () => {
                                 </p>
                                 <p className='text-green-700'>{val?.['interview-feedback'].length} {val?.['interview-feedback'].length > 1 ? 'Candidates' : 'Candidate'} </p>
                             </div>
-                            <Button className='w-full cursor-pointer' variant={'outline'}>
-                                View Detail <ArrowRight />
-                            </Button>
+                            <Link href={'/scheduled-interview/' + val?.interview_id + '/details'}>
+                                <Button className='w-full cursor-pointer' variant={'outline'}>
+                                    View Detail <ArrowRight />
+                                </Button>
+                            </Link>
                         </div>
                     ))
                 }
