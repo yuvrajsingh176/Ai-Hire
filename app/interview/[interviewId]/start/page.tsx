@@ -12,12 +12,12 @@ import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/services/supaBaseClient';
 import { useParams, useRouter } from 'next/navigation';
+import { CreateAssistantDTO } from '@vapi-ai/web/dist/api';
 
 const StartInterview = () => {
-    const { interviewInfo } = useContext(InterviewDataContext);
     const [activeUser, setActiveUser] = useState(false);
     // const [conversation, setConversation] = useState();
-    const conversationRef = useRef<any>(null);
+    const conversationRef = useRef(null);
     const [loading, setLoading] = useState(false);
 
     const vapiRef = useRef<Vapi | null>(null);
@@ -54,6 +54,16 @@ const StartInterview = () => {
             vapi.removeAllListeners();
         };
     }, []);
+
+    const context = useContext(InterviewDataContext);
+
+    if (!context) {
+        // Fallback or error
+        return <div>No interview context provided.</div>;
+    }
+
+    const { interviewInfo } = context;
+
 
     const startInterviewCall = async () => {
         try {
@@ -94,7 +104,7 @@ Be friendly, engaging, and natural. Keep it focused on React.
                 },
             };
 
-            vapiRef.current?.start(assistantOptions);
+            vapiRef.current?.start(assistantOptions as CreateAssistantDTO);
         } catch (error) {
             console.error('Mic access error:', error);
             toast.error("Microphone permission denied. Please allow mic access to begin.");
@@ -125,7 +135,7 @@ Be friendly, engaging, and natural. Keep it focused on React.
             const parsedFeedback = JSON.parse(cleanedContent);
 
             // Insert into Supabase
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .from('interview-feedback')
                 .insert([
                     {

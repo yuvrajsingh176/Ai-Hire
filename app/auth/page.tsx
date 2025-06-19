@@ -5,7 +5,7 @@ import Image from "next/image"
 
 const login = () => {
   const siginWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
+    await supabase.auth.signInWithOAuth({
       provider: 'google',
     });
 

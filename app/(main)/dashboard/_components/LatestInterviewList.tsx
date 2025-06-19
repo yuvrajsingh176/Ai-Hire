@@ -51,7 +51,7 @@ const LatestInterviewList = ({ copy, setCopy }: { copy: string, setCopy: Dispatc
     };
 
     useEffect(() => {
-        GetInterviews(user?.email)
+        GetInterviews(user?.email as string)
     }, [user?.email])
 
     return (

@@ -14,7 +14,10 @@ export interface InterviewDetails {
   jobDescription: string,
   jobPosition: string,
   type: string,
-  questionList: string[]
+  questionList: string[],
+  userName:string,
+  userEmail:string,
+  
 }
 
 const Interview = () => {
@@ -24,8 +27,17 @@ const Interview = () => {
   const [userEmail, setUserEmail] = useState('');
 
   const [loading, setLoading] = useState(false);
-  const { interviewInfo, setInterviewInfo } = useContext(InterviewDataContext);
+
+  const context = useContext(InterviewDataContext);
   const router = useRouter();
+
+  useEffect(() => {
+    getInterviewDetails(interviewId as string)
+  }, [interviewId])
+
+
+
+
 
 
   const getInterviewDetails = async (interviewId: string) => {
@@ -45,6 +57,11 @@ const Interview = () => {
       toast('Incorrect interview link')
     }
   }
+  if (!context) {
+    // Fallback or error
+    return <div>No interview context provided.</div>;
+  }
+  const { setInterviewInfo } = context;
 
   const onJoinInterview = async () => {
     setLoading(true);
@@ -62,9 +79,7 @@ const Interview = () => {
 
   }
 
-  useEffect(() => {
-    getInterviewDetails(interviewId as string)
-  }, [interviewId])
+
 
   return (
     <div className="px-6 md:px-28 lg:px-48 xl:px-64 py-8 ">

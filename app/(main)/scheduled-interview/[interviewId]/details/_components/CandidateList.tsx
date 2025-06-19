@@ -1,6 +1,5 @@
 import moment from "moment"
 import { InterviewFeedbackEntry } from "../page"
-import { Button } from "@/components/ui/button"
 import ReportDialog from "./ReportDialog"
 
 const CandidateList = ({ candidateList }: { candidateList: InterviewFeedbackEntry[] }) => {

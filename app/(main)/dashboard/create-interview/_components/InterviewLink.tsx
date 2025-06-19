@@ -3,7 +3,7 @@ import Image from "next/image"
 import { FormDataType } from "../page"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, Calendar, Clock, Copy, List, Plus, UserCog } from "lucide-react"
+import { ArrowLeft, Clock, Copy, List, Plus, UserCog } from "lucide-react"
 import { FaSlack, FaWhatsapp } from "react-icons/fa";
 import Link from "next/link"
 import { MdEmail } from "react-icons/md";

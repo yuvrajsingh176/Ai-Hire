@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { UserDetailContext } from '@/context/userContext'
 import { supabase } from '@/services/supaBaseClient'
-import { ArrowRight, Copy, Plus, Send, Video } from 'lucide-react';
+import { ArrowRight,  Plus, Video } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react'
 
@@ -28,10 +28,11 @@ const ScheduledInterview = () => {
             .eq('userEmail', email)
             .order('id', { ascending: false });
 
-        setInterviewList(result.data as InterviewFeedback[])
+        setInterviewList(result.data as unknown as InterviewFeedback[])
     }
+
     useEffect(() => {
-        GetInterviewList(user?.email)
+        GetInterviewList(user?.email as string)
     }, [user?.email])
 
     return (

@@ -9,7 +9,7 @@ export type User = {
 };
 
 type UserContextType = {
-  user: User;
+  user: User | null;
   setUser?: (user: User) => void; // optional setter if needed
 };
 

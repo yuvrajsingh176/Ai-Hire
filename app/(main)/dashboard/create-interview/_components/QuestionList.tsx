@@ -29,10 +29,14 @@ const QuestionList = ({ formData, onCreateLink }: {
             });
             setList(resp?.data?.questions);
             setLoading(false);
-        } catch (e: any) {
+        } catch (e: unknown) {
             setLoading(false);
-
-            toast('Failed try again');
+            if (axios.isAxiosError(e)) {
+                console.error('Axios error:', e.message);
+            } else {
+                console.error('Unexpected error:', e);
+            }
+            toast('Failed, try again');
         }
 
     }
@@ -42,12 +46,12 @@ const QuestionList = ({ formData, onCreateLink }: {
         try {
             const interview_id = uuidv4();
 
-            const { data, error } = await supabase
+            await supabase
                 .from('Interviews')
                 .insert([
                     {
                         jobPosition: formData.jobPosition, jobDescription: formData.jobDescription, duration: formData.interviewDuration, type: formData.interviewType, questionList: lists,
-                        userEmail: user.email, interview_id: interview_id
+                        userEmail: user?.email, interview_id: interview_id
                     },
                 ])
                 .select()

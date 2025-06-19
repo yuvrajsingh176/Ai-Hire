@@ -38,7 +38,7 @@ const AllInterview = () => {
     };
 
     useEffect(() => {
-        GetInterviews(user?.email)
+        GetInterviews(user?.email as string)
     }, [user?.email])
 
     return (

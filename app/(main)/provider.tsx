@@ -1,4 +1,4 @@
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 import React from 'react'
 import { AppSidebar } from './_components/Appsidebar';
 import WelcomeBanner from './dashboard/_components/WelcomeBanner';

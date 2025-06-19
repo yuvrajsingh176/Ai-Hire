@@ -33,7 +33,7 @@ export type InterviewFeedbackEntry = {
     userName: string;
     userEmail: string;
     recommended: boolean;
-    created_at:string;
+    created_at: string;
 };
 
 
@@ -46,14 +46,21 @@ const InterviewDetails = () => {
 
     const GetInterviewList = async (email: string) => {
         const result = await supabase.from('Interviews')
-            .select('jobPosition,jobDescription,duration,questionList,created_at,interview_id,type,interview-feedback(userEmail,userName,feedback, created_at,recommended)')
+            .select(`jobPosition,jobDescription,duration,questionList,created_at,interview_id,type,"interview-feedback":interview-feedback(userEmail,userName,feedback,created_at,recommended)`)
             .eq('userEmail', email)
             .eq('interview_id', interviewId);
-        setInterviewDetail(result.data[0] as InterviewSummary)
+
+        if (result.error || !result.data || result.data.length === 0) {
+            console.error('Error fetching interview details:', result.error);
+            return;
+        }
+
+        setInterviewDetail(result.data[0] as unknown as InterviewSummary);
     }
 
+
     useEffect(() => {
-        GetInterviewList(user?.email)
+        GetInterviewList(user?.email as string)
     }, [user?.email])
 
 
