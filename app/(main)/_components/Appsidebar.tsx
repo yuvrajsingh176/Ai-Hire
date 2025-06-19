@@ -18,11 +18,15 @@ import { usePathname } from "next/navigation"
 export function AppSidebar() {
     const path = usePathname();
 
+
     return (
         <Sidebar>
             <SidebarHeader className="flex items-center mt-5" >
                 <Image src={'/logo.png'} height={100} width={200} className="w-[150px] rounded-md" alt="Logo" />
-                <Button className="w-full mt-5 h-12">Create New Interview <Plus /></Button>
+                <Link href={'https://ai-hire-taupe.vercel.app/dashboard/create-interview'}>
+                    <Button className="w-full mt-5 h-12">Create New Interview <Plus /></Button>
+
+                </Link>
             </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup >
