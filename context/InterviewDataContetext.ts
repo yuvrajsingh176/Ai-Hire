@@ -3,7 +3,7 @@ import { createContext } from "react";
 
 
 type InterviewDetailsContextType = {
-    interviewInfo: InterviewDetails;
+    interviewInfo: InterviewDetails | undefined;
     setInterviewInfo: (interview: InterviewDetails) => void; // optional setter if needed
 };
 export const InterviewDataContext = createContext<InterviewDetailsContextType | null>(null)

@@ -1,8 +1,8 @@
+import { openai } from "@/lib/openai";
 import { FEEBACK_PROMPT } from "@/services/Constants";
 import { NextRequest, NextResponse } from "next/server";
-import OpenAI from "openai";
 
-export const openai = new OpenAI({ apiKey: process.env.OPENAI_APIKEY });
+
 
 export const runtime = 'nodejs';
 

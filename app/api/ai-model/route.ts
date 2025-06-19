@@ -1,8 +1,7 @@
+import { openai } from "@/lib/openai";
 import { QUESTION_PROMPT } from "@/services/Constants";
 import { NextRequest, NextResponse } from "next/server";
-import OpenAI from "openai";
 
-export const openai = new OpenAI({ apiKey: process.env.OPENAI_APIKEY });
 
 export async function POST(req: NextRequest) {
     const { jobTitle, jobDescription, type, duration } = await req.json();
