@@ -61,12 +61,16 @@ const QuestionList = ({ formData, onCreateLink }: {
                 interview_id,
             )
 
-        } catch (e) {
-            toast('Error while saving data😔');
-            setSaveLoading(false);
         }
-
-
+        catch (e: unknown) {
+            if (e instanceof Error) {
+                toast('Error while saving data😔');
+                setSaveLoading(false);
+            } else {
+                console.error('An unexpected error occurred', e);
+                toast('Something went wrong');
+            }
+        }
     }
 
     useEffect(() => {

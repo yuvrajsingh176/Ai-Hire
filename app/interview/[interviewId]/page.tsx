@@ -15,9 +15,9 @@ export interface InterviewDetails {
   jobPosition: string,
   type: string,
   questionList: string[],
-  userName:string,
-  userEmail:string,
-  
+  userName: string,
+  userEmail: string,
+
 }
 
 const Interview = () => {
@@ -52,10 +52,19 @@ const Interview = () => {
         setInterviewDetails(Interviews[0])
       }
       setLoading(false);
-    } catch (e) {
-      toast('Incorrect interview link')
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        console.error(e.message);
+        toast('Incorrect interview link');
+      } else {
+        console.error('An unexpected error occurred', e);
+        toast('Something went wrong');
+      }
     }
+
+
   }
+
   if (!context) {
     // Fallback or error
     return <div>No interview context provided.</div>;
