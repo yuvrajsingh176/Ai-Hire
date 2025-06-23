@@ -49,7 +49,7 @@ const ScheduledInterview = () => {
             <div className="flex flex-wrap gap-6 my-6">
                 {
                     interviewList?.map((val: InterviewFeedback, index) => (
-                        <div className="border rounded-md bg-white p-6 h-full flex flex-col gap-4 " key={index}>
+                        <div className="border rounded-md bg-white h-[150px] w-[350px]  flex flex-col  justify-around p-2 px-3" key={index}>
                             <div className="flex justify-between gap-10">
                                 <p className="text-primary font-bold">
                                     {val?.jobPosition}

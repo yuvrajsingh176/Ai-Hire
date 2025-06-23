@@ -67,7 +67,7 @@ const InterviewDetails = () => {
 
     return (
         <div>
-            <p className='font-bold mb-6 text-2xl'>Interview Detail</p>
+            <p className='font-bold my-6 text-2xl'>Interview Detail</p>
             <InterviewDetailCont interviewDetail={interviewDetail as InterviewSummary} />
             <CandidateList candidateList={interviewDetail?.['interview-feedback'] as InterviewFeedbackEntry[]} />
 

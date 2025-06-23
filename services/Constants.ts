@@ -1,4 +1,4 @@
-import { BriefcaseBusinessIcon, CalendarIcon, Code2Icon, HardDrive, LayoutDashboardIcon, ListIcon, Puzzle, Settings, Touchpad, User2Icon, WalletCardsIcon } from "lucide-react";
+import { BriefcaseBusinessIcon, CalendarIcon, Code2Icon, HardDrive, LayoutDashboardIcon, ListIcon, Puzzle,  Touchpad, User2Icon, } from "lucide-react";
 
 export const SideBarOpt = [
     {
@@ -7,25 +7,15 @@ export const SideBarOpt = [
         path: '/dashboard'
     },
     {
-        name: 'Scheduled Interview',
+        name: 'Scheduled Interviews',
         icon: CalendarIcon,
         path: '/scheduled-interview'
     },
     {
-        name: 'All Interview',
+        name: 'All Interviews',
         icon: ListIcon,
         path: '/all-interview'
     },
-    {
-        name: 'Billing',
-        icon: WalletCardsIcon,
-        path: '/billing'
-    },
-    {
-        name: 'Settings',
-        icon: Settings,
-        path: '/settings'
-    }
 ]
 
 export const InterviewType = [{

@@ -64,12 +64,12 @@ const LatestInterviewList = ({ copy, setCopy }: { copy: string, setCopy: Dispatc
                     <Button className="cursor-pointer" onClick={() => router.push('/dashboard/create-interview')}>Create New Interview <Plus /></Button>
                 </div>
             }
-            <div className="flex flex-wrap gap-6">
+            <div className="flex flex-wrap gap-6 ">
                 {
                     interviewList?.map((val: Interview, index) => (
-                        <div className="border rounded-md bg-white p-6 h-full flex flex-col gap-4 " key={index}>
+                        <div className="border rounded-md bg-white p-2 px-3 h-[150px] w-[350px] flex flex-col  justify-around " key={index}>
                             <div className="flex justify-between gap-10">
-                                <p className="text-primary font-bold">
+                                <p className="text-primary font-bold overflow-ellipsis">
                                     {val?.jobPosition}
                                 </p>
                                 <p>{new Date(val?.created_at).toLocaleDateString('en-US', {
@@ -84,7 +84,7 @@ const LatestInterviewList = ({ copy, setCopy }: { copy: string, setCopy: Dispatc
                                     <Copy />
                                     {copy === val.interview_id ? 'Copied' : 'Copy'}
                                 </Button>
-                                <Button className="cursor-pointer" onClick={() => router.push(`/interview/` + val?.interview_id)}>
+                                <Button className={"cursor-pointer"} onClick={() => router.push(`/interview/` + val?.interview_id)}>
                                     <Send />
                                     Visit
                                 </Button>

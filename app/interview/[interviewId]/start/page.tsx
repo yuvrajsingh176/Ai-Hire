@@ -2,9 +2,8 @@
 
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { Loader2Icon, Mic, Timer } from 'lucide-react';
+import { Loader2Icon, Timer } from 'lucide-react';
 import { InterviewDataContext } from '@/context/InterviewDataContetext';
-import { FaPhoneSquare } from 'react-icons/fa';
 import Vapi from '@vapi-ai/web';
 import AlertComponent from './_components/AlertComponent';
 import { toast } from 'sonner';
@@ -13,16 +12,20 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/services/supaBaseClient';
 import { useParams, useRouter } from 'next/navigation';
 import { CreateAssistantDTO } from '@vapi-ai/web/dist/api';
+import TimerComp from './_components/TimerComp';
 
 const StartInterview = () => {
     const [activeUser, setActiveUser] = useState(false);
     // const [conversation, setConversation] = useState();
     const conversationRef = useRef(null);
+    const [callStart, setCallstart] = useState(false);
+
     const [loading, setLoading] = useState(false);
 
     const vapiRef = useRef<Vapi | null>(null);
     const { interviewId } = useParams();
-    const router = useRouter()
+    const router = useRouter();
+
     useEffect(() => {
         if (!vapiRef.current) {
             vapiRef.current = new Vapi(process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY || '');
@@ -34,11 +37,13 @@ const StartInterview = () => {
         vapi.on('speech-end', () => setActiveUser(true));
 
         vapi.on('call-start', () => {
+            setCallstart(true);
             toast('Your Interview Has Started 🚀');
         });
 
         vapi.on('call-end', () => {
             toast('Your Interview Has Ended 🏁');
+            setCallstart(false);
             setTimeout(() => {
                 GenerateFeedback();
             }, 1000);
@@ -54,6 +59,7 @@ const StartInterview = () => {
             vapi.removeAllListeners();
         };
     }, []);
+
 
     const context = useContext(InterviewDataContext);
 
@@ -163,13 +169,17 @@ Be friendly, engaging, and natural. Keep it focused on React.
 
 
     return (
-        <div className="p-10 lg:px-48 xl:py-28 xl:px-56 min-h-[80vh] ">
+        <div className="p-10 lg:px-48 xl:py-28 xl:px-56 min-h-[100vh] ">
             <h2 className="flex justify-between items-center font-bold text-xl">
                 AI Interview Session
-                <span className="flex items-center gap-2 text-sm text-gray-700">
-                    <Timer className="w-4 h-4" />
-                    {interviewInfo?.duration}
-                </span>
+                <div className="flex items-center gap-2 text-sm text-gray-700">
+                    {
+                        callStart ? <TimerComp stopInterview={stopInterview} duration={interviewInfo?.duration || ''} /> : <div className='flex items-center text-center gap-1'>
+                            <Timer className="w-4 h-4" />
+                            {interviewInfo?.duration}
+                        </div>
+                    }
+                </div>
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-7 mt-6">
@@ -177,7 +187,7 @@ Be friendly, engaging, and natural. Keep it focused on React.
                 <div className="flex flex-col items-center justify-center h-[400px] bg-white border rounded-lg shadow-sm">
                     <div className='relative'>
                         {!activeUser && (
-                            <span className='absolute inset-0 rounded-full bg-blue-500 opacity-75 animate-ping'></span>
+                            <span className={` ${callStart && 'bg-blue-500 opacity-75 animate-ping'} absolute inset-0 rounded-full `}></span>
                         )}
                         <Image
                             src="/interviewr.png"
@@ -194,7 +204,7 @@ Be friendly, engaging, and natural. Keep it focused on React.
                 <div className="flex flex-col items-center justify-center h-[400px] bg-white border rounded-lg shadow-sm">
                     <div className='relative'>
                         {activeUser && (
-                            <span className='absolute inset-0 rounded-full bg-blue-500 opacity-75 animate-ping'></span>
+                            <span className={`absolute inset-0 rounded-full ${callStart && 'bg-blue-500 opacity-75 animate-ping'}`}></span>
                         )}
                         <div className="flex items-center justify-center w-[100px] h-[100px] rounded-full bg-primary text-white text-2xl font-bold">
                             {interviewInfo?.userName?.[0] ?? 'H'}
@@ -204,25 +214,29 @@ Be friendly, engaging, and natural. Keep it focused on React.
                 </div>
             </div>
 
-            <div className="mt-6 flex justify-center items-center">
-                <Button onClick={startInterviewCall}>Start Interview</Button>
-            </div>
 
-            <div className={`flex my-10 justify-center gap-6 ${loading && 'hidden'}`}>
-                <Mic className='size-16 p-3 bg-primary text-white rounded-full cursor-pointer' />
+            {callStart && (<div className={`flex my-10 justify-center gap-6 ${loading && 'hidden'}`}>
                 <AlertComponent stopInterview={stopInterview}>
-                    <FaPhoneSquare className='size-16 p-3 bg-red-600 text-white rounded-full cursor-pointer' />
+                    <Button className='bg-red-700 text-white cursor-pointer' onClick={startInterviewCall}>End Interview</Button>
                 </AlertComponent>
-            </div>
-            {loading && (
-                <Loader2Icon className='animate-spin' />
-            )}
+            </div>)}
+
+            {!callStart && <div className={`flex my-10 justify-center gap-6 ${loading && 'hidden'}`}><Button onClick={startInterviewCall} className='cursor-pointer'>Start Interview</Button> </div>}
+
+            {
+                loading && (
+                    <div className='flex justify-center items-center w-full'>
+                        <Loader2Icon className='animate-spin size-10' />
+
+                    </div>
+                )
+            }
 
 
-            <h2 className='text-sm text-gray-400 text-center mt-5 pb-4'>
+            {callStart && <h2 className='text-sm text-gray-400 text-center mt-5 pb-4'>
                 Interview is in progress...
-            </h2>
-        </div>
+            </h2>}
+        </div >
     );
 };
 

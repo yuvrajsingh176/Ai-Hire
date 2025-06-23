@@ -13,18 +13,22 @@ const InterviewCompleted = () => {
                     Thank you for completing the interview.
                 </p>
                 {/* Replace src with your actual image path */}
-                <div className="w-full h-64 relative">
+                <div
+                    style={{ borderRadius: '10%' }}
+                    className="w-full h-64 relative rounded-md">
                     <Image
                         src="/interview-completed.png" // <-- change this to your desired image
                         alt="Interview Completed"
                         layout="fill"
                         objectFit="contain"
+
+                        style={{ borderRadius: '10%' }}
                     />
                 </div>
             </div>
             <div className='mt-4 flex items-center justify-center'>
                 <Link href={'/dashboard'}>
-                    <Button >
+                    <Button className='cursor-pointer'>
                         Dashboard
                     </Button>
                 </Link>

@@ -43,7 +43,7 @@ const CreateInterview: React.FC = () => {
     }
 
     return (
-        <div className='mt-10 px-10 md:px-24 lg:px-44 xl:px-56'>
+        <div className='mt-10  '>
             <div className='flex gap-2 justify-start items-center text-center'>
                 <ArrowLeft onClick={() => router.back()} className='font-bold cursor-pointer' />
                 <p className='font-bold text-2xl'>Create New Interview</p>

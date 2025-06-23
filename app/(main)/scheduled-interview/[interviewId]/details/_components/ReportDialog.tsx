@@ -4,14 +4,12 @@ import {
     DialogContent,
     DialogDescription,
     DialogHeader,
-    DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { InterviewFeedbackEntry } from "../page"
 import { Progress } from "@/components/ui/progress"
 
 const ReportDialog = ({ candidate }: { candidate: InterviewFeedbackEntry }) => {
-    console.log(candidate?.recommended)
     return (
         <div>
             <Dialog>
@@ -21,7 +19,6 @@ const ReportDialog = ({ candidate }: { candidate: InterviewFeedbackEntry }) => {
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Feedback</DialogTitle>
                         <DialogDescription asChild>
                             <div className="flex flex-col gap-10 mt-10 p-8 border rounded-2xl shadow-lg bg-white md:flex-row md:items-start">
 

@@ -21,7 +21,7 @@ const WelcomeBanner = () => {
             e.stopPropagation()
             setShowSignout(false)
         }} >
-            <div className="rounded-md relative  flex py-6 px-10 bg-white justify-between w-full items-center border">
+            <div className="rounded-md relative  flex py-6 md:px-10 px-2 bg-white justify-between w-full items-center border">
                 <p className="text-xl font-semibold">Welcome back,<span className="text-primary">{user?.name}</span></p>
                 {
                     user?.picture && (
@@ -34,7 +34,7 @@ const WelcomeBanner = () => {
                 }
                 {showSignout && <div onClick={() => {
                     signOut();
-                }} className="absolute cursor-pointer  right-4 border top-20 rounded-2xl p-4 bg-white ">
+                }} className="absolute cursor-pointer  md:right-4 right-[-10px] border top-20 rounded-2xl p-4 bg-white ">
                     Log Out
                 </div>}
             </div>

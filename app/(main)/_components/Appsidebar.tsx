@@ -18,14 +18,12 @@ import { usePathname } from "next/navigation"
 export function AppSidebar() {
     const path = usePathname();
 
-
     return (
         <Sidebar>
             <SidebarHeader className="flex items-center mt-5" >
                 <Image src={'/logo.png'} height={100} width={200} className="w-[150px] rounded-md" alt="Logo" />
                 <Link href={'https://ai-hire-taupe.vercel.app/dashboard/create-interview'}>
-                    <Button className="w-full mt-5 h-12">Create New Interview <Plus /></Button>
-
+                    <Button className="w-full mt-5 h-12 cursor-pointer">Create New Interview <Plus /></Button>
                 </Link>
             </SidebarHeader>
             <SidebarContent>
@@ -35,7 +33,7 @@ export function AppSidebar() {
                             {
                                 SideBarOpt.map((item) => (
                                     <Link href={item.path} key={item.name}>
-                                        <SidebarMenuItem className={`${path === item.path && "text-primary font-semibold border-primary"} flex gap-2 items-center p-2 border rounded-md bg-white hover:bg-primary hover:shadow hover:text-white`} >
+                                        <SidebarMenuItem className={`${path.includes(item.path) ? " font-semibold bg-primary border-primary text-white" : "text-black"} flex gap-2 items-center p-2 border rounded-md hover:text-white hover:bg-primary hover:shadow `} >
                                             <item.icon />
                                             <p>
                                                 {item.name}

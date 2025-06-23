@@ -53,7 +53,6 @@ const Interview = () => {
       }
       setLoading(false);
     } catch (e) {
-      console.log(e);
       toast('Incorrect interview link')
     }
   }
@@ -157,7 +156,7 @@ const Interview = () => {
             <li>Test your camera and microphone before starting.</li>
           </ul>
         </div>
-        <Button onClick={() => onJoinInterview()} disabled={loading || !userName || !userEmail} className='mt-5 w-full font-bold'>
+        <Button onClick={() => onJoinInterview()} disabled={loading || !userName || !userEmail} className='mt-5 cursor-pointer w-full font-bold'>
           {
             loading ?
               <Loader2 className='animate-spin' />

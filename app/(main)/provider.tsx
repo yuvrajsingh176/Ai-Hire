@@ -1,4 +1,4 @@
-import { SidebarProvider } from '@/components/ui/sidebar';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import React from 'react'
 import { AppSidebar } from './_components/Appsidebar';
 import WelcomeBanner from './dashboard/_components/WelcomeBanner';
@@ -8,8 +8,8 @@ const DashboardProvider = ({ children }: { children: React.ReactNode }) => {
         <div className='bg-secondary'>
             <SidebarProvider>
                 <AppSidebar />
-                <main className='w-full p-10 mx-18'>
-                    {/* <SidebarTrigger /> */}
+                <main className='w-full p-4 md:p-10 md:mx-18'>
+                    <SidebarTrigger />
                     <WelcomeBanner/>
                     {children}
                 </main>

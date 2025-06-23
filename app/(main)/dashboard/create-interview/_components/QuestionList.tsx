@@ -62,7 +62,6 @@ const QuestionList = ({ formData, onCreateLink }: {
             )
 
         } catch (e) {
-            console.log(e)
             toast('Error while saving data😔');
             setSaveLoading(false);
         }
@@ -75,10 +74,10 @@ const QuestionList = ({ formData, onCreateLink }: {
     }, [formData]);
 
     if (loading) {
-        return <div className='flex flex-col justify-center items-center'>
-            <Loader2Icon className="animate-spin" />
+        return <div className='flex flex-col justify-center items-center gap-10 h-[60vh] border p-5  border-gray-300 rounded-xl bg-white'>
+            <Loader2Icon className="animate-spin size-14" />
             <div className="p-5 bg-blue-100 rounded-xl border  border-primary flex flex-col gap-5 items-center ">
-                <h2 className="font-medium">Generating Interview Questions🫷🔃</h2>
+                <h2 className="font-medium">Generating Interview Questions🫷</h2>
                 <h2 className="text-primary">Our AI is crafting most challenging and real world questions for you🚀</h2>
             </div>
         </div>

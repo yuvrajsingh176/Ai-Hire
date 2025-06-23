@@ -4,9 +4,7 @@ import { FormDataType } from "../page"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Clock, Copy, List, Plus, UserCog } from "lucide-react"
-import { FaSlack, FaWhatsapp } from "react-icons/fa";
 import Link from "next/link"
-import { MdEmail } from "react-icons/md";
 import { toast } from "sonner"
 
 
@@ -19,8 +17,10 @@ const InterviewLink = ({ interviewId, formData }: { interviewId: string, formDat
 
   const onCopyLink = async () => {
     await navigator.clipboard.writeText(url);
-    toast('Interview link copied to clipboard')
+    toast.success('Interview link copied to clipboard')
   }
+
+
 
   return (
     <div className="flex flex-col  w-full justify-center items-center mt-10">
@@ -40,52 +40,24 @@ const InterviewLink = ({ interviewId, formData }: { interviewId: string, formDat
 
         </div>
         <div className=" flex items-center justify-between gap-2 mt-4 ">
-          <Input className="text-primary text-2xl  font-semibold" defaultValue={GetInterviewUrl()} disabled={true} />
+          <Input className="text-primary md:text-xl  text-base font-semibold" defaultValue={GetInterviewUrl()} disabled={true} />
           <Button className="cursor-pointer" onClick={() => onCopyLink()}><Copy /> Copy Link</Button>
         </div>
         <hr className="my-7" />
-        <div className="flex gap-5 ">
+        <div className="flex justify-between md:justify-center md:gap-10 items-center text-center ">
           <h2 className="text-xs text-gray-500 flex gap-2 items-center "><Clock className="h-4  w-4" /> {formData.interviewDuration}</h2>
           <h2 className="text-xs text-gray-500 flex gap-2 items-center "><List className="h-4  w-4" /> {formData.interviewType?.join(',')}</h2>
           <h2 className="text-xs text-gray-500 flex gap-2 items-center "><UserCog className="h-4  w-4" /> {formData.jobPosition}</h2>
 
         </div>
       </div>
-      <div className="mt-10 bg-white rounded-2xl shadow-sm w-full">
-        <h2 className="font-bold text-lg text-gray-800 mb-4 px-6 pt-6 text-center">Share Via</h2>
 
-        <div className="flex flex-col  justify-between items-center w-full px-6 pb-6 gap-4">
-          <Button
-            variant="outline"
-            className="flex items-center gap-2 w-full md:w-1/3 justify-center py-5 text-sm cursor-pointer"
-          >
-            <MdEmail size={20} />
-            <span className="font-medium">Email</span>
-          </Button>
-
-          <Button
-            variant="outline"
-            className="flex items-center gap-2 w-full md:w-1/3 justify-center py-5 text-sm cursor-pointer"
-          >
-            <FaSlack size={20} />
-            <span className="font-medium">Slack</span>
-          </Button>
-
-          <Button
-            variant="outline"
-            className="flex items-center gap-2 w-full md:w-1/3 justify-center py-5 text-sm cursor-pointer"
-          >
-            <FaWhatsapp size={20} />
-            <span className="font-medium">WhatsApp</span>
-          </Button>
-        </div>
-      </div>
-      <div className="flex w-full gap-5 justify-between mt-8">
-        <Link href={'/dashboard'}>
-          <Button className="cursor-pointer" variant={'outline'}><ArrowLeft />Back to Dashboard </Button>
+      <div className="flex flex-col  md:flex-row gap-4 md:gap-0 w-full  justify-center  md:justify-end   mt-8">
+        <Link href={'/create-interview'} className="w-full h-full md:mr-6 md:w-fit">
+          <Button className="cursor-pointer w-full"><Plus />Create new Interview</Button>
         </Link>
-        <Link href={'/create-interview'}>
-          <Button className="cursor-pointer"><Plus />Create new Interview</Button>
+        <Link href={'/dashboard'} className=" w-full h-full md:w-fit">
+          <Button className="cursor-pointer w-full" variant={'outline'}><ArrowLeft />Back to Dashboard </Button>
         </Link>
       </div>
     </div>
