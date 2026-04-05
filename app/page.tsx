@@ -65,16 +65,6 @@ export default function Home() {
                 <Button onClick={() => router.push('/auth')} className="px-10 py-7 text-lg font-bold rounded-2xl shadow-xl shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-1 transition-all duration-300 gap-2 cursor-pointer w-full sm:w-auto">
                   Start Practice Now <MoveRight className="size-5" />
                 </Button>
-                <div className="flex -space-x-3 items-center ml-4">
-                   {[1,2,3,4].map(i => (
-                     <div key={i} className="size-10 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center overflow-hidden ring-2 ring-transparent hover:ring-primary transition-all duration-300 shadow-sm cursor-default">
-                        <Image src={`https://i.pravatar.cc/150?u=${i+10}`} alt="avatar" width={40} height={40} />
-                     </div>
-                   ))}
-                   <p className="ml-5 text-sm font-medium text-gray-500 bg-white/50 backdrop-blur-sm px-3 py-1 rounded-full border border-gray-100">
-                     Trusted by <span className="text-gray-900 font-bold">1,000+</span> candidates
-                   </p>
-                </div>
               </div>
             </div>
 
@@ -82,24 +72,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="bg-white py-12 border-y border-gray-100">
-        <div className="max-w-7xl mx-auto px-6">
-           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {[
-                {label: "Feedback Sent", value: "50k+"},
-                {label: "Mock Interviews", value: "12k+"},
-                {label: "Hired Rate", value: "92%"},
-                {label: "AI Accuracy", value: "99.9%"},
-              ].map((stat, i) => (
-                <div key={i} className="text-center group cursor-default">
-                   <h3 className="text-3xl font-extrabold text-gray-900 mb-1 group-hover:text-primary transition-colors">{stat.value}</h3>
-                   <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{stat.label}</p>
-                </div>
-              ))}
-           </div>
-        </div>
-      </section>
 
       {/* Features Section */}
       <section className="py-24 px-6 relative bg-white overflow-hidden">
