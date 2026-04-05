@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/services/supaBaseClient";
 import Image from "next/image";
 import { FaGoogle } from "react-icons/fa";
-import { ShieldCheck, Sparkles } from "lucide-react";
+import {  Sparkles } from "lucide-react";
 
 const Login = () => {
   const signInWithGoogle = async () => {
