@@ -54,7 +54,7 @@ export default function Home() {
               </div>
               
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] mb-6">
-                Ace Your Next Interview with <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">AI Excellence</span>
+                Ace Your Next Interview with <span className="text-primary bg-clip-text">AI Excellence</span>
               </h1>
               
               <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed">
@@ -68,7 +68,7 @@ export default function Home() {
                 <div className="flex -space-x-3 items-center ml-4">
                    {[1,2,3,4].map(i => (
                      <div key={i} className="size-10 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center overflow-hidden ring-2 ring-transparent hover:ring-primary transition-all duration-300 shadow-sm cursor-default">
-                        <img src={`https://i.pravatar.cc/150?u=${i+10}`} alt="avatar" />
+                        <Image src={`https://i.pravatar.cc/150?u=${i+10}`} alt="avatar" width={40} height={40} />
                      </div>
                    ))}
                    <p className="ml-5 text-sm font-medium text-gray-500 bg-white/50 backdrop-blur-sm px-3 py-1 rounded-full border border-gray-100">
@@ -115,19 +115,16 @@ export default function Home() {
               icon={<Bot />} 
               title="State-of-the-art AI" 
               desc="Our GPT-powered engine understands nuances, providing a conversational experience that feels eerily human." 
-              delay="0"
             />
             <FeatureCard 
               icon={<Clock />} 
               title="On-Demand Practice" 
               desc="No scheduling needed. Open your laptop at 3:00 AM and have a full technical interview ready in seconds." 
-              delay="100"
             />
             <FeatureCard 
               icon={<BarChart3 />} 
               title="Granular Analytics" 
               desc="Break down your performance with ratings for tone, clarity, body language, and technical accuracy." 
-              delay="200"
             />
           </div>
         </div>
@@ -187,7 +184,7 @@ export default function Home() {
                  <Image src='/logo.png' height={32} width={32} alt="logo" className="rounded-lg shadow-sm" />
                  <span className="font-extrabold text-xl tracking-tight text-gray-900">AI Hire</span>
               </div>
-              <p className="text-gray-500 max-w-sm mb-6 leading-relaxed">The world's most advanced AI-powered platform for professional interview preparation and career coaching.</p>
+              <p className="text-gray-500 max-w-sm mb-6 leading-relaxed">The world&apos;s most advanced AI-powered platform for professional interview preparation and career coaching.</p>
               <div className="flex gap-4">
                  {[1,2,3,4].map(i => <div key={i} className="size-10 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center hover:bg-primary/5 hover:border-primary/20 transition-all cursor-pointer"><div className="size-4 bg-gray-400 rounded-sm" /></div>)}
               </div>
@@ -226,7 +223,7 @@ export default function Home() {
   );
 }
 
-function FeatureCard({ icon, title, desc, delay }: { icon: React.ReactNode; title: string; desc: string; delay: string }) {
+function FeatureCard({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
   return (
     <div className={`group p-8 rounded-[2rem] bg-white border border-gray-100 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 cursor-default hover:-translate-y-2`}>
       <div className="size-14 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-900 group-hover:bg-primary group-hover:text-white transition-all duration-500 mb-8 shadow-sm group-hover:rotate-6 group-hover:scale-110">
@@ -249,7 +246,7 @@ function TestimonialCard({ name, role, text, image }: { name: string; role: stri
       <p className="text-gray-700 italic mb-8 relative z-10 leading-relaxed font-medium">“{text}”</p>
       <div className="flex items-center gap-4 relative z-10">
         <div className="size-14 rounded-full overflow-hidden border-2 border-primary/10 p-0.5 group-hover:border-primary group-hover:scale-105 transition-all duration-500">
-           <img src={image} alt={name} className="size-full rounded-full" />
+           <Image src={image} alt={name} width={56} height={56} className="size-full rounded-full" />
         </div>
         <div>
           <h4 className="text-gray-900 font-bold leading-tight group-hover:text-primary transition-colors">{name}</h4>

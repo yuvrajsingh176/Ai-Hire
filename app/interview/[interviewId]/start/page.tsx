@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState, useCallback } from 'react';
 import Image from 'next/image';
 import { Loader2Icon, Timer } from 'lucide-react';
 import { InterviewDataContext } from '@/context/InterviewDataContetext';
@@ -16,7 +16,6 @@ import TimerComp from './_components/TimerComp';
 
 const StartInterview = () => {
     const [activeUser, setActiveUser] = useState(false);
-    // const [conversation, setConversation] = useState();
     const conversationRef = useRef(null);
     const [callStart, setCallstart] = useState(false);
     const [connecting, setConnecting] = useState(false);
@@ -25,6 +24,68 @@ const StartInterview = () => {
     const vapiRef = useRef<Vapi | null>(null);
     const { interviewId } = useParams();
     const router = useRouter();
+
+    const context = useContext(InterviewDataContext);
+
+    const GenerateFeedback = useCallback(async () => {
+        setLoading(true)
+        try {
+            const conversation = conversationRef.current;
+
+            if (!conversation) {
+                console.error('No conversation data captured.');
+                toast.error('Interview ended too early — no conversation recorded.');
+                setLoading(false);
+                return;
+            }
+            // Send conversation to your feedback API
+            const res = await axios.post('/api/ai-feedback', { conversation });
+            const content = res?.data;
+            if (!content) {
+                throw new Error("No content returned from feedback API.");
+            }
+
+            // Clean and parse the JSON string (remove backticks, whitespace, etc.)
+            const cleanedContent = content
+                .replace(/```json/g, '')
+                .replace(/```/g, '')
+                .trim();
+
+            const parsedFeedback = JSON.parse(cleanedContent);
+
+            // Insert into Supabase
+            const { error } = await supabase
+                .from('interview-feedback')
+                .insert([
+                    {
+                        userName: context?.interviewInfo?.userName,
+                        userEmail: context?.interviewInfo?.userEmail,
+                        interview_id: interviewId,
+                        feedback: parsedFeedback.feedback,
+                        recommended: (() => {
+                            const rec = parsedFeedback?.feedback?.recommendation;
+                            if (typeof rec === 'boolean') return rec;
+                            if (typeof rec === 'string') {
+                                const v = rec.toUpperCase().trim();
+                                return v === 'TRUE' || v === 'RECOMMENDED';
+                            }
+                            return false;
+                        })(),
+                    }
+                ])
+                .select();
+
+            if (error) {
+                throw new Error(`Supabase insert error: ${error.message}`);
+            }
+
+            router.replace('/interview/' + interviewId + '/completed');
+            setLoading(false)
+        } catch (err) {
+            console.error('Feedback generation failed:', err);
+            toast.error('Failed to generate feedback.');
+        }
+    }, [interviewId, context?.interviewInfo?.userEmail, context?.interviewInfo?.userName, router]);
 
     useEffect(() => {
         if (!vapiRef.current) {
@@ -68,18 +129,13 @@ const StartInterview = () => {
         return () => {
             vapi.removeAllListeners();
         };
-    }, []);
-
-
-    const context = useContext(InterviewDataContext);
+    }, [GenerateFeedback]);
 
     if (!context) {
-        // Fallback or error
         return <div>No interview context provided.</div>;
     }
 
     const { interviewInfo } = context;
-
 
     const startInterviewCall = async () => {
         if (connecting || callStart) return; // prevent double-click
@@ -133,68 +189,6 @@ Be friendly, engaging, and natural.
     const stopInterview = () => {
         vapiRef.current?.stop();
     };
-
-    const GenerateFeedback = async () => {
-        setLoading(true)
-        try {
-            const conversation = conversationRef.current;
-
-            if (!conversation) {
-                console.error('No conversation data captured.');
-                toast.error('Interview ended too early — no conversation recorded.');
-                setLoading(false);
-                return;
-            }
-            // Send conversation to your feedback API
-            const res = await axios.post('/api/ai-feedback', { conversation });
-            const content = res?.data;
-            if (!content) {
-                throw new Error("No content returned from feedback API.");
-            }
-
-            // Clean and parse the JSON string (remove backticks, whitespace, etc.)
-            const cleanedContent = content
-                .replace(/```json/g, '')
-                .replace(/```/g, '')
-                .trim();
-
-            const parsedFeedback = JSON.parse(cleanedContent);
-
-            // Insert into Supabase
-            const { error } = await supabase
-                .from('interview-feedback')
-                .insert([
-                    {
-                        userName: interviewInfo?.userName,
-                        userEmail: interviewInfo?.userEmail,
-                        interview_id: interviewId,
-                        feedback: parsedFeedback.feedback,
-                        recommended: (() => {
-                            const rec = parsedFeedback?.feedback?.recommendation;
-                            if (typeof rec === 'boolean') return rec;
-                            if (typeof rec === 'string') {
-                                const v = rec.toUpperCase().trim();
-                                return v === 'TRUE' || v === 'RECOMMENDED';
-                            }
-                            return false;
-                        })(),
-                    }
-                ])
-                .select();
-
-            if (error) {
-                throw new Error(`Supabase insert error: ${error.message}`);
-            }
-
-            router.replace('/interview/' + interviewId + '/completed');
-            setLoading(false)
-        } catch (err) {
-            console.error('Feedback generation failed:', err);
-            toast.error('Failed to generate feedback.');
-        }
-    };
-
-
 
     return (
         <div className="p-10 lg:px-48 xl:py-28 xl:px-56 min-h-[100vh] ">

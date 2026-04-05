@@ -9,11 +9,11 @@ import { ShieldCheck, Sparkles } from "lucide-react";
 const Login = () => {
   const signInWithGoogle = async () => {
     // Note: In production you would probably have a redirect URL configured.
-    await supabase.auth.signInWithOAuth({ 
-        provider: 'google',
-        options: {
-            redirectTo: window.location.origin + '/dashboard'
-        }
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin + '/dashboard'
+      }
     });
   };
 
@@ -23,14 +23,14 @@ const Login = () => {
       <div className="absolute top-0 right-0 -translate-y-12 translate-x-12 size-64 md:size-96 rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 translate-y-12 -translate-x-12 size-64 md:size-96 rounded-full bg-purple-500/5 blur-[120px] pointer-events-none" />
 
-      <div className="w-full max-w-md relative z-10 transition-all duration-500 animate-in fade-in zoom-in-95 duration-700">
+      <div className="w-full max-w-md relative z-10 transition-all animate-in fade-in zoom-in-95 duration-700">
         <div className="bg-white/80 backdrop-blur-xl rounded-[2.5rem] border border-white shadow-2xl shadow-primary/5 overflow-hidden">
-          
+
           <div className="flex flex-col items-center p-8 md:p-10">
             {/* Logo */}
             <div className="flex items-center gap-2 mb-8 group cursor-default">
               <Image
-                src="/favicon.ico"
+                src="/logo.png"
                 width={40}
                 height={40}
                 alt="Logo"
@@ -40,7 +40,19 @@ const Login = () => {
             </div>
 
             {/* Illustration Section */}
-        
+            <div className="relative w-full aspect-video mb-8 group overflow-hidden rounded-2xl border border-gray-100 shadow-inner">
+               <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors duration-500" />
+               <Image
+                 src="/login_auth_illustration_1775381367539.png"
+                 fill
+                 alt="Auth Illustration"
+                 className="object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+               />
+               <div className="absolute top-3 right-3 bg-white/80 backdrop-blur-md px-3 py-1 rounded-full border border-white shadow-sm flex items-center gap-1.5 ring-1 ring-black/5">
+                  <ShieldCheck className="size-3 text-green-500" />
+                  <span className="text-[10px] font-bold text-gray-700 uppercase tracking-wider">Secure Access</span>
+               </div>
+            </div>
 
             {/* Header Text */}
             <div className="text-center space-y-2 mb-10">
@@ -61,17 +73,17 @@ const Login = () => {
 
             {/* Social Proof */}
             <div className="mt-8 pt-8 border-t border-gray-100 w-full">
-               <div className="flex items-center justify-center gap-2 text-primary font-bold text-xs uppercase tracking-[0.2em]">
-                  <Sparkles className="size-3.5 fill-primary/20 animate-pulse" />
-                  <span>Powered by GPT-4</span>
-               </div>
+              <div className="flex items-center justify-center gap-2 text-primary font-bold text-xs uppercase tracking-[0.2em]">
+                <Sparkles className="size-3.5 fill-primary/20 animate-pulse" />
+                <span>Powered by GPT-4</span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Footer Links */}
         <p className="text-center mt-8 text-xs text-gray-400 font-medium px-8 leading-relaxed">
-          By continuing, you agree to AI Hire's <span className="text-gray-600 hover:text-primary transition-colors cursor-pointer underline decoration-gray-300">Terms of Service</span> and <span className="text-gray-600 hover:text-primary transition-colors cursor-pointer underline decoration-gray-300">Privacy Policy</span>.
+          By continuing, you agree to AI Hire&apos;s <span className="text-gray-600 hover:text-primary transition-colors cursor-pointer underline decoration-gray-300">Terms of Service</span> and <span className="text-gray-600 hover:text-primary transition-colors cursor-pointer underline decoration-gray-300">Privacy Policy</span>.
         </p>
       </div>
     </div>
