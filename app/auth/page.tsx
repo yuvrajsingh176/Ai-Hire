@@ -39,20 +39,6 @@ const Login = () => {
               <span className="font-bold text-xl tracking-tight text-gray-900 leading-none">AI Hire</span>
             </div>
 
-            {/* Illustration Section */}
-            <div className="relative w-full aspect-video mb-8 group overflow-hidden rounded-2xl border border-gray-100 shadow-inner">
-               <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors duration-500" />
-               <Image
-                 src="/login_auth_illustration_1775381367539.png"
-                 fill
-                 alt="Auth Illustration"
-                 className="object-cover transition-transform duration-[2000ms] group-hover:scale-110"
-               />
-               <div className="absolute top-3 right-3 bg-white/80 backdrop-blur-md px-3 py-1 rounded-full border border-white shadow-sm flex items-center gap-1.5 ring-1 ring-black/5">
-                  <ShieldCheck className="size-3 text-green-500" />
-                  <span className="text-[10px] font-bold text-gray-700 uppercase tracking-wider">Secure Access</span>
-               </div>
-            </div>
 
             {/* Header Text */}
             <div className="text-center space-y-2 mb-10">
