@@ -7,8 +7,7 @@ const Dashboard = () => {
     const [copy, setCopy] = useState<string>('')
 
     return (
-        <div className="w-full">
-            <p className="text-2xl font-bold my-4">Dashboard</p>
+        <div className="w-full space-y-2">
             <CreateOptions />
             <LatestInterviewList copy={copy} setCopy={setCopy} />
         </div>

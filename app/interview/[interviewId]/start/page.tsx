@@ -19,7 +19,7 @@ const StartInterview = () => {
     // const [conversation, setConversation] = useState();
     const conversationRef = useRef(null);
     const [callStart, setCallstart] = useState(false);
-
+    const [connecting, setConnecting] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const vapiRef = useRef<Vapi | null>(null);
@@ -38,6 +38,7 @@ const StartInterview = () => {
 
         vapi.on('call-start', () => {
             setCallstart(true);
+            setConnecting(false);
             toast('Your Interview Has Started 🚀');
         });
 
@@ -47,6 +48,15 @@ const StartInterview = () => {
             setTimeout(() => {
                 GenerateFeedback();
             }, 1000);
+        });
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        vapi.on('error', (error: any) => {
+            console.error('Vapi error:', error);
+            toast.error(`Vapi error: ${error?.message || JSON.stringify(error)}`);
+            setCallstart(false);
+            setConnecting(false);
+            setLoading(false);
         });
 
         vapi.on('message', (message) => {
@@ -72,6 +82,8 @@ const StartInterview = () => {
 
 
     const startInterviewCall = async () => {
+        if (connecting || callStart) return; // prevent double-click
+        setConnecting(true);
         try {
             await navigator.mediaDevices.getUserMedia({ audio: true });
 
@@ -86,24 +98,24 @@ const StartInterview = () => {
                     language: "en-US",
                 },
                 voice: {
-                    provider: "playht",
-                    voiceId: "jennifer",
+                    provider: "openai",
+                    voiceId: "alloy",
                 },
                 model: {
                     provider: "openai",
-                    model: "gpt-4",
+                    model: "gpt-3.5-turbo",
                     messages: [
                         {
                             role: "system",
                             content: `
 You are an AI voice assistant conducting interviews.
 Your job is to ask candidates provided interview questions, assess their responses.
-Begin with a friendly intro. Example: "Hey there! Welcome to your ${interviewInfo?.jobPosition} interview. Let’s get started!"
+Begin with a friendly intro. Example: "Hey there! Welcome to your ${interviewInfo?.jobPosition} interview. Let's get started!"
 Ask one question at a time.
 Questions: ${questionList}
-Encourage responses, give feedback like: "Nice! That’s solid." or "Want a hint?"
+Encourage responses, give feedback like: "Nice! That's solid." or "Want a hint?"
 After 5-7 questions, wrap up. Example: "Great work! Keep sharpening your skills!"
-Be friendly, engaging, and natural. Keep it focused on React.
+Be friendly, engaging, and natural.
 `.trim(),
                         },
                     ],
@@ -114,6 +126,7 @@ Be friendly, engaging, and natural. Keep it focused on React.
         } catch (error) {
             console.error('Mic access error:', error);
             toast.error("Microphone permission denied. Please allow mic access to begin.");
+            setConnecting(false);
         }
     };
 
@@ -125,6 +138,13 @@ Be friendly, engaging, and natural. Keep it focused on React.
         setLoading(true)
         try {
             const conversation = conversationRef.current;
+
+            if (!conversation) {
+                console.error('No conversation data captured.');
+                toast.error('Interview ended too early — no conversation recorded.');
+                setLoading(false);
+                return;
+            }
             // Send conversation to your feedback API
             const res = await axios.post('/api/ai-feedback', { conversation });
             const content = res?.data;
@@ -149,7 +169,15 @@ Be friendly, engaging, and natural. Keep it focused on React.
                         userEmail: interviewInfo?.userEmail,
                         interview_id: interviewId,
                         feedback: parsedFeedback.feedback,
-                        recommended: parsedFeedback?.feedback?.recommendation === 'Recommended'
+                        recommended: (() => {
+                            const rec = parsedFeedback?.feedback?.recommendation;
+                            if (typeof rec === 'boolean') return rec;
+                            if (typeof rec === 'string') {
+                                const v = rec.toUpperCase().trim();
+                                return v === 'TRUE' || v === 'RECOMMENDED';
+                            }
+                            return false;
+                        })(),
                     }
                 ])
                 .select();
@@ -217,11 +245,25 @@ Be friendly, engaging, and natural. Keep it focused on React.
 
             {callStart && (<div className={`flex my-10 justify-center gap-6 ${loading && 'hidden'}`}>
                 <AlertComponent stopInterview={stopInterview}>
-                    <Button className='bg-red-700 text-white cursor-pointer' onClick={startInterviewCall}>End Interview</Button>
+                    <Button className='bg-red-700 text-white cursor-pointer'>End Interview</Button>
                 </AlertComponent>
             </div>)}
 
-            {!callStart && <div className={`flex my-10 justify-center gap-6 ${loading && 'hidden'}`}><Button onClick={startInterviewCall} className='cursor-pointer'>Start Interview</Button> </div>}
+            {!callStart && (
+                <div className={`flex my-10 justify-center gap-6 ${loading && 'hidden'}`}>
+                    <Button
+                        onClick={startInterviewCall}
+                        disabled={connecting}
+                        className='cursor-pointer min-w-[160px]'
+                    >
+                        {connecting ? (
+                            <><Loader2Icon className='animate-spin mr-2' /> Connecting...</>
+                        ) : (
+                            'Start Interview'
+                        )}
+                    </Button>
+                </div>
+            )}
 
             {
                 loading && (

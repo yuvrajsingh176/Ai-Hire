@@ -9,13 +9,31 @@ import {
 import { InterviewFeedbackEntry } from "../page"
 import { Progress } from "@/components/ui/progress"
 
+// Normalize recommendation: handles true, false, "TRUE", "FALSE", "Recommended", etc.
+const isRecommended = (recommendation: unknown): boolean => {
+    if (typeof recommendation === 'boolean') return recommendation;
+    if (typeof recommendation === 'string') {
+        const val = recommendation.toUpperCase().trim();
+        return val === 'TRUE' || val === 'RECOMMENDED';
+    }
+    return false;
+}
+
 const ReportDialog = ({ candidate }: { candidate: InterviewFeedbackEntry }) => {
+    // Handle both "summary" and "summery" (AI typo fallback)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const summaryText = (candidate?.feedback as any)?.summary
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        || (candidate?.feedback as any)?.summery
+        || 'No summary available.';
+
+    const recommended = isRecommended(candidate?.feedback?.recommendation);
+
     return (
         <div>
             <Dialog>
                 <DialogTrigger asChild>
                     <Button variant={'outline'} className="text-primary cursor-pointer">View Report</Button>
-
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
@@ -25,15 +43,12 @@ const ReportDialog = ({ candidate }: { candidate: InterviewFeedbackEntry }) => {
                                 {/* Candidate Info + Rating */}
                                 <div className="flex flex-col gap-6 w-full md:w-1/3">
                                     <div className="flex items-center gap-5">
-                                        {/* Avatar */}
                                         <div className="bg-primary w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-sm">
-                                            {candidate?.userName?.[0]}
+                                            {candidate?.userName?.[0] ?? '?'}
                                         </div>
-
-                                        {/* Name & Email */}
                                         <div>
-                                            <h3 className="font-bold text-xl">{candidate?.userName}</h3>
-                                            <p className="text-sm text-gray-500">{candidate?.userEmail}</p>
+                                            <h3 className="font-bold text-xl">{candidate?.userName ?? 'Unknown'}</h3>
+                                            <p className="text-sm text-gray-500">{candidate?.userEmail ?? '—'}</p>
                                         </div>
                                     </div>
 
@@ -57,10 +72,10 @@ const ReportDialog = ({ candidate }: { candidate: InterviewFeedbackEntry }) => {
                                     <p className="font-bold text-lg">Skill Assessment</p>
                                     <div className="space-y-5">
                                         {[
-                                            { label: 'Technical Skills', value: candidate?.feedback?.rating.technicalSkills },
-                                            { label: 'Communication', value: candidate?.feedback?.rating.communication },
-                                            { label: 'Problem Solving', value: candidate?.feedback?.rating.problemSolving },
-                                            { label: 'Experience', value: candidate?.feedback?.rating.experience }
+                                            { label: 'Technical Skills', value: candidate?.feedback?.rating?.technicalSkills },
+                                            { label: 'Communication', value: candidate?.feedback?.rating?.communication },
+                                            { label: 'Problem Solving', value: candidate?.feedback?.rating?.problemSolving },
+                                            { label: 'Experience', value: candidate?.feedback?.rating?.experience }
                                         ].map((skill, idx) => (
                                             <div key={idx}>
                                                 <div className="flex justify-between text-sm font-medium">
@@ -75,19 +90,14 @@ const ReportDialog = ({ candidate }: { candidate: InterviewFeedbackEntry }) => {
 
                                 {/* Feedback Summary & Recommendation */}
                                 <div className="w-full md:w-1/3 space-y-6">
-                                    {/* Summary */}
                                     <div className="space-y-2">
                                         <p className="font-bold text-lg">Progress Summary</p>
                                         <p className="text-sm text-gray-600 leading-relaxed">
-                                            {candidate?.feedback?.summary}
+                                            {summaryText}
                                         </p>
                                     </div>
 
-                                    {/* Recommendation */}
-                                    <div
-                                        className={`p-6 rounded-xl shadow-md text-white font-medium ${candidate?.feedback?.recommendation === 'FALSE' ? 'bg-red-500' : 'bg-green-500'
-                                            }`}
-                                    >
+                                    <div className={`p-6 rounded-xl shadow-md text-white font-medium ${recommended ? 'bg-green-500' : 'bg-red-500'}`}>
                                         <h2 className="text-lg mb-1">Recommendation</h2>
                                         <p className="text-sm">{candidate?.feedback?.recommendationMsg}</p>
                                     </div>
@@ -95,8 +105,6 @@ const ReportDialog = ({ candidate }: { candidate: InterviewFeedbackEntry }) => {
 
                             </div>
                         </DialogDescription>
-
-
                     </DialogHeader>
                 </DialogContent>
             </Dialog>

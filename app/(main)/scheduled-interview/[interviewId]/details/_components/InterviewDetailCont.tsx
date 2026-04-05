@@ -41,7 +41,7 @@ const InterviewDetailCont = ({ interviewDetail }: { interviewDetail: InterviewSu
       <div className="mt-4 ">
         <p className="font-bold text-lg">Question List</p>
         <ul className="list-disc pl-5">
-          {interviewDetail?.questionList.map((question, ind) => (
+          {interviewDetail?.questionList?.map((question, ind) => (
             <li className="my-1" key={ind}>
               {question}
             </li>
